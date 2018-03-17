@@ -1,0 +1,151 @@
+#define true 1
+#define false 0
+// Required for the XM8, do not remove!
+#include "RscDefines.hpp"
+#include "R3F_LOG\desc_include.h"
+author = "www.raidergamingplay.enjin.com";
+onLoadName = "RaiderGaming";
+onLoadMission= "www.raidergamingplay.enjin.com";
+loadScreen = "exile_assets\texture\mod\logo.paa"; 
+disableChannels[] = {0, 2};
+OnLoadIntro = "Sign up on forums please!";
+OnLoadIntroTime = false;
+OnLoadMissionTime = false;
+
+class Header
+{
+    gameType = Survive; // Do NOT change this
+    minPlayers = 1;
+    maxPlayers = 60;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Exile Settings - Do not change these!
+///////////////////////////////////////////////////////////////////////////////
+forceRotorLibSimulation = 2;
+skipLobby = 1;
+joinUnassigned = 1;
+respawn = "BASE";
+respawnDelay = 300;
+respawnDialog = 0;
+respawnOnStart = 0;
+respawnButton = 1; 
+respawnTemplates[] = {"Exile"};
+corpseManagerMode = 0;
+corpseLimit = 5;
+corpseRemovalMinTime = 1800;
+corpseRemovalMaxTime = 1800;
+wreckManagerMode = 0;
+wreckLimit = 1;
+wreckRemovalMinTime = 60;
+wreckRemovalMaxTime = 180;
+scriptedPlayer = 1;
+disabledAI = 1;
+enableItemsDropping = 0;
+briefing = 0;
+debriefing = 0;
+allowFunctionsLog = 1;
+enableDebugConsole = 0; 
+allowFunctionsRecompile = 0;
+showSquadRadar = 1;
+showUAVFeed = 1;
+reviveDelay = 6;
+reviveForceRespawnDelay = 3;
+reviveBleedOutDelay = 120;
+
+showHUD[] = 
+{
+    true,   // Scripted HUD (same as showHUD command)
+    true,   // Vehicle + soldier info
+    true,   // Vehicle radar
+    true,   // Vehicle compass
+    true,   // Tank direction indicator
+    false,  // Commanding menu
+    true,
+    true,   // HUD Weapon Cursors
+    true   // <-- This option is now Vehicle Panel (Required for GPS)
+};
+
+#include "Call.fsm"
+#include "config.cpp"
+#include "infiSTAR_defines.hpp"
+#include "infiSTAR_AdminMenu.hpp"
+#include "infiSTAR_chat.hpp"
+#include "infiSTAR_KeyBinds.hpp"
+#include "MarXet\dialog\RscMarXetDefines.hpp"
+#include "MarXet\dialog\RscMarXetDialog.hpp"
+#include "ExAdClient\ExAd.cpp"
+
+class CfgFunctions
+{
+	#include "ExAdClient\CfgFunctions.cpp"
+};
+
+class CfgNetworkMessages
+{
+	#include "ExAdClient\CfgNetworkMessages.cpp"
+};
+
+class CfgHints
+{
+    #include "ExAdClient\CfgHints.cpp" // Only needed for ExAd Virtual Garage
+};
+
+
+class CfgRemoteExec
+
+{
+    class Functions
+    {
+       mode = 1;
+		jip = 0;
+		class fnc_AdminReq { allowedTargets=2; };
+		class ExileServer_system_network_dispatchIncomingMessage { allowedTargets=2; };
+		class AR_Client_Rappel_From_Heli { allowedTargets=0; }; 
+		class AR_Hint { allowedTargets=1; }; 
+		class AR_Hide_Object_Global { allowedTargets=2; }; 
+		class AR_Enable_Rappelling_Animation { allowedTargets=2; }; 
+		class AR_Rappel_From_Heli { allowedTargets=2; };
+		class ExileSecurity_AlarmLights { allowedTargets=1; };
+		class ExAdServer_fnc_clientRequest { allowedTargets=2; };
+
+    };
+    class Commands
+    {
+		mode = 0;
+		jip = 0;
+
+    };	
+    class XG_EnterSafeZone 
+    {
+        module = "AntiTheft";
+        parameters[] = {"OBJECT","OBJECT"};
+    };
+    class XG_LeftSafeZone
+    {
+        module = "AntiTheft";
+        parameters[] = {"OBJECT"};
+    };
+    class XG_PlayerEnterSafezone
+    {
+        module = "AntiTheft";
+        parameters[] = {"OBJECT"};
+    };
+    class XG_PlayerLeaveSafezone
+    {
+        module = "AntiTheft";
+        parameters[] = {"OBJECT"};
+    };
+    class XG_CheckVariable
+    {
+        module = "AntiTheft";
+        parameters[] = {"OBJECT","OBJECT"};
+    };
+	
+};
+class RscTitles
+{
+	// Status Bar
+	#include "ExAdClient\RscTitles.cpp"
+};
+
